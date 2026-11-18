@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f6f7">
+  <meta name="description" content="台北市內湖區 YouBike 2.0 即時通勤看板，查看可借車、可還空位與站點趨勢。">
+  <title>內湖科技園區通勤看板 · YouBike 2.0</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="內湖通勤看板首頁"><span class="brand-mark">N</span><span>內湖通勤看板</span></a>
+    <div class="header-meta"><span class="live-dot"></span><span id="connection-label">正在連線</span><span class="divider"></span><span id="clock">--:--</span></div>
+  </header>
+
+  <main id="top" class="container">
+    <section class="intro">
+      <div>
+        <p class="eyebrow">NEIHU · YOUBIKE 2.0</p>
+        <h1>上班路上，掌握車況。</h1>
+        <p class="intro-copy">內湖區 YouBike 即時站點與通勤趨勢。資料每分鐘自動更新。</p>
+      </div>
+      <button id="refresh-button" class="refresh-button" type="button"><span aria-hidden="true">↻</span> 立即更新</button>
+    </section>
+
+    <section class="status-row" aria-live="polite">
+      <span class="status-chip"><span class="live-dot"></span><span id="update-status">等待首次資料</span></span>
+      <span id="source-time" class="muted">資料時間 --</span>
+      <span id="fetch-time" class="muted">抓取時間 --</span>
+    </section>
+    <div id="error-banner" class="error-banner" role="status" hidden></div>
+
+    <section class="metric-grid" aria-label="內湖區即時統計">
+      <article class="metric-card primary"><div class="metric-heading"><span>目前可借車輛</span><span class="metric-icon">🚲</span></div><div class="metric-value" id="total-bikes">--</div><div class="metric-foot"><span id="station-count">-- 個營運站點</span><span class="trend-tag" id="bike-trend">等待趨勢</span></div></article>
+      <article class="metric-card"><div class="metric-heading"><span>可還空位</span><span class="metric-icon return-icon">↙</span></div><div class="metric-value" id="total-docks">--</div><div class="metric-foot"><span>所有內湖營運站</span><span class="subtle-tag">即時</span></div></article>
+      <article class="metric-card"><div class="metric-heading"><span>低車量提醒</span><span class="metric-icon alert-icon">!</span></div><div class="metric-value" id="low-station-count">--</div><div class="metric-foot"><span>可借車低於站點容量 20%</span><span class="subtle-tag">警戒門檻</span></div></article>
+    </section>
+
+    <section class="content-grid">
+      <article class="panel trend-panel">
+        <div class="panel-heading"><div><p class="eyebrow">COMMUTE PULSE</p><h2>可借車量趨勢</h2></div><span class="panel-note">每次更新記錄一點</span></div>
+        <div class="chart-wrap"><canvas id="trend-chart" aria-label="內湖區總可借車量趨勢圖" role="img"></canvas><div id="chart-empty" class="chart-empty">累積幾次更新後，這裡會顯示趨勢。</div></div>
+        <div class="chart-legend"><span><i class="legend-dot"></i>內湖區可借車總數</span><span id="trend-range">本次瀏覽期間</span></div>
+      </article>
+      <article class="panel alert-panel">
+        <div class="panel-heading"><div><p class="eyebrow">NEEDS A BIKE</p><h2>低車量站點</h2></div><span id="alert-count-badge" class="count-badge">0 站</span></div>
+        <p class="panel-description">可借車數低於站點容量的 20%，出發前先留意。</p>
+        <div id="alerts-list" class="alerts-list"><p class="empty-state">正在取得最新站點資料…</p></div>
+      </article>
+    </section>
+
+    <section class="panel stations-panel">
+      <div class="panel-heading station-heading"><div><p class="eyebrow">STATION FINDER</p><h2>站點即時車況</h2></div><span class="panel-note" id="result-count">-- 個站點</span></div>
+      <div class="filters">
+        <label class="search-box"><span aria-hidden="true">⌕</span><input id="search-input" type="search" placeholder="搜尋站名或地址" autocomplete="off" aria-label="搜尋站名或地址"></label>
+        <label class="select-label"><span class="sr-only">排序方式</span><select id="sort-select"><option value="bikes-desc">可借車多到少</option><option value="bikes-asc">可借車少到多</option><option value="name">依站名排序</option></select></label>
+        <label class="checkbox-label"><input id="low-only" type="checkbox"><span>只看低車量</span></label>
+      </div>
+      <div class="table-scroll"><table><thead><tr><th scope="col">站點</th><th scope="col">位置</th><th scope="col">可借車</th><th scope="col">可還空位</th><th scope="col">更新時間</th></tr></thead><tbody id="stations-body"><tr><td colspan="5" class="empty-state">正在載入站點…</td></tr></tbody></table></div>
+      <div class="table-footer"><span>站點資料由臺北市政府交通局提供</span><span>每分鐘自動更新 · 僅顯示內湖區</span></div>
+    </section>
+
+    <footer class="footer"><span>資料來源：臺北市 YouBike 2.0 即時資訊</span><a href="https://data.gov.tw/dataset/137993" target="_blank" rel="noopener noreferrer">政府資料開放授權條款－第 1 版 ↗</a><span>專案：內湖科技園區通勤看板</span></footer>
+  </main>
+</body>
+</html>
